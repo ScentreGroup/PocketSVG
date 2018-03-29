@@ -214,7 +214,10 @@ extern "C" CGRect SVGBoundingRectForPaths(NSArray<SVGBezierPath*> * const paths)
 {
     CGRect bounds = CGRectZero;
     for(SVGBezierPath *path in paths) {
-        bounds = CGRectUnion(bounds, path.bounds);
+        CGRect pathBounds = CGRectStandardize(path.bounds);
+        if (!(CGRectIsEmpty(pathBounds) || CGRectIsInfinite(pathBounds))) {
+            bounds = CGRectUnion(bounds, pathBounds);
+        }
     }
     return bounds;
 }
